@@ -28,7 +28,7 @@ GitVersion versionInfo                      = null;
 // TASKS
 //////////////////////////////////////////////////////////////////////
 
-Setup(() => {
+Setup(ctx => {
     if(!FileExists(solutionPath)) throw new Exception(string.Format("Solution file not found - {0}", solutionPath.ToString()));
     solution = ParseSolution(solutionPath.ToString());
 
@@ -188,7 +188,6 @@ Task("Upload-AppVeyor-Artifacts")
     .WithCriteria(() => AppVeyor.IsRunningOnAppVeyor)
     .Does(() =>
 {
-
     foreach(var artifact in System.IO.Directory.EnumerateFiles(artifacts.ToString() +"/packages", "*.nupkg")) {
         AppVeyor.UploadArtifact(artifact, settings => settings
             .SetArtifactType(AppVeyorUploadArtifactType.NuGetPackage)
