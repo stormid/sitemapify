@@ -3,7 +3,7 @@
   <metadata>
     <id>Sitemapify</id>
     <title>Sitemapify - Sitemap generator for ASP.NET</title>
-	<description>Provides a ASP.NET HttpHandler to assist with generating a dynamic sitemap.xml file</description>
+	  <description>Provides a ASP.NET HttpHandler to assist with generating a dynamic sitemap.xml file</description>
     <authors>Phil Oyston</authors>
     <owners>Phil Oyston</owners>
     <licenseUrl>https://raw.githubusercontent.com/stormid/sitemapify/master/LICENSE</licenseUrl>
