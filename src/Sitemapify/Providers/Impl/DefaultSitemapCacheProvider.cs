@@ -9,10 +9,16 @@ namespace Sitemapify.Providers.Impl
         private readonly MemoryCache _cache = MemoryCache.Default;
         public void Add(XDocument sitemapContent, DateTimeOffset? expires)
         {
+            Remove();
             _cache.Add(nameof(SitemapifyHttpHandler), sitemapContent, expires.GetValueOrDefault(ObjectCache.InfiniteAbsoluteExpiration));
         }
 
-        public bool IsCached => _cache.Contains(nameof(SitemapifyHttpHandler));
+        public virtual bool IsCached => _cache.Contains(nameof(SitemapifyHttpHandler));
+
+        public void Remove()
+        {
+            _cache.Remove(nameof(SitemapifyHttpHandler));
+        }
 
         public XDocument Get()
         {

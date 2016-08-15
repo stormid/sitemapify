@@ -16,7 +16,13 @@ namespace Sitemapify.Builders.Impl
             var assemblyName = GetType().Assembly.GetName();
             var description =
                 $"Sitemapify - {GetType().Assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description}";
-            var headerComments = new XComment($" {description} (v{assemblyName.Version} at {DateTime.UtcNow.ToString("O")}) ");
+            var headerComments = new []
+            {
+                new XComment($" {description} "),
+                new XComment($" Version: {assemblyName.Version} "),
+                new XComment($" Generated: {DateTime.UtcNow.ToString("O")} ")
+
+            };
 
             return new XDocument(new XDeclaration("1.0", "utf-8", "yes"), headerComments, new XElement(XName.Get("urlset", SitemapUrl.SitemapNs), elements));
         }

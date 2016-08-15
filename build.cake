@@ -111,6 +111,11 @@ Task("Copy-Files")
     CopyFile("./src/Sitemapify/bin/" +configuration +"/Sitemapify.pdb", buildOutput +"/Sitemapify/lib/net45//Sitemapify.pdb");
     CopyFile("./src/Sitemapify/bin/" +configuration +"/readme.txt", buildOutput +"/Sitemapify/readme.txt");
     CopyDirectory("./src/Sitemapify/content", buildOutput +"/Sitemapify/content");
+
+    EnsureDirectoryExists(buildOutput +"/Sitemapify.Umbraco");
+    EnsureDirectoryExists(buildOutput +"/Sitemapify.Umbraco/lib/net45");
+    CopyFile("./src/Sitemapify.Umbraco/bin/" +configuration +"/Sitemapify.Umbraco.dll", buildOutput +"/Sitemapify.Umbraco/lib/net45/Sitemapify.dll");
+    CopyFile("./src/Sitemapify.Umbraco/bin/" +configuration +"/Sitemapify.Umbraco.pdb", buildOutput +"/Sitemapify.Umbraco/lib/net45//Sitemapify.pdb");    
 });
 
 Task("Create-NuGet-Package")
@@ -121,7 +126,7 @@ Task("Create-NuGet-Package")
 {
     EnsureDirectoryExists(artifacts +"/packages/");
 
-    var settings = new NuGetPackSettings {
+    NuGetPack("./nuspec/Sitemapify.nuspec", new NuGetPackSettings {
         BasePath = buildOutput +"/Sitemapify",
         Properties = new Dictionary<string, string> { { "Configuration", configuration }},
         Symbols = false,
@@ -131,8 +136,23 @@ Task("Create-NuGet-Package")
         Files = new[] {
             new NuSpecContent { Source = "**/*", Target = "" },
         }
-    };
-    NuGetPack("./nuspec/Sitemapify.nuspec", settings);                     
+    });                     
+
+    NuGetPack("./nuspec/Sitemapify.Umbraco.nuspec", new NuGetPackSettings {
+        BasePath = buildOutput +"/Sitemapify.Umbraco",
+        Properties = new Dictionary<string, string> { { "Configuration", configuration }},
+        Symbols = false,
+        NoPackageAnalysis = true,
+        Version = versionInfo.NuGetVersionV2,
+        OutputDirectory = artifacts +"/packages/",
+        Files = new[] {
+            new NuSpecContent { Source = "**/*", Target = "" },
+        },
+        Dependencies = new[] {
+            new NuSpecDependency { Id = "UmbracoCms.Core", Version = "[7.0,8.0]" },
+            new NuSpecDependency { Id = "Sitemapify", Version = "[" +versionInfo.NuGetVersionV2 +"]"}
+        }
+    });    
 });
 
 Task("Update-AppVeyor-Build-Number")

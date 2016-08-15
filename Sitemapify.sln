@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{F9DFA6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitemapifySample", "sample\SitemapifySample\SitemapifySample.csproj", "{4E4129F4-0FEB-4A66-8DEC-3E80D5764F80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitemapify.Umbraco", "src\Sitemapify.Umbraco\Sitemapify.Umbraco.csproj", "{1BC1FBB9-9E9E-417B-8BDC-A519FE7D4296}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitemapifyUmbracoSample", "sample\SitemapifyUmbracoSample\SitemapifyUmbracoSample.csproj", "{B9A91429-FB57-4568-8D88-804A9E00BAEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{4E4129F4-0FEB-4A66-8DEC-3E80D5764F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E4129F4-0FEB-4A66-8DEC-3E80D5764F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E4129F4-0FEB-4A66-8DEC-3E80D5764F80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BC1FBB9-9E9E-417B-8BDC-A519FE7D4296}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BC1FBB9-9E9E-417B-8BDC-A519FE7D4296}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BC1FBB9-9E9E-417B-8BDC-A519FE7D4296}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BC1FBB9-9E9E-417B-8BDC-A519FE7D4296}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9A91429-FB57-4568-8D88-804A9E00BAEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9A91429-FB57-4568-8D88-804A9E00BAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9A91429-FB57-4568-8D88-804A9E00BAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9A91429-FB57-4568-8D88-804A9E00BAEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,5 +53,7 @@ Global
 		{16ED145C-CD29-4063-95C0-BD7C46D86D18} = {84B1F178-A2EC-4349-A23F-85BE79C8BFF7}
 		{D5C04526-1AE5-46E5-B7EA-D7344A4C6D77} = {6077C186-FD83-483E-9A35-E59E341764D2}
 		{4E4129F4-0FEB-4A66-8DEC-3E80D5764F80} = {F9DFA62C-7451-4648-BF0D-23C8E821D9E2}
+		{1BC1FBB9-9E9E-417B-8BDC-A519FE7D4296} = {84B1F178-A2EC-4349-A23F-85BE79C8BFF7}
+		{B9A91429-FB57-4568-8D88-804A9E00BAEA} = {F9DFA62C-7451-4648-BF0D-23C8E821D9E2}
 	EndGlobalSection
 EndGlobal

@@ -7,7 +7,7 @@ using Sitemapify.Providers.Impl;
 
 namespace Sitemapify.Config
 {
-    public class DefaultSitemapContainerAdapter : ISitemapContainerAdapter
+    public class DefaultSitemapContainerAdapter : ISitemapContainerAdapter, ISitemapifyConfigurer
     {
         private static readonly IDictionary<Type, object> Registrations = new Dictionary<Type, object>()
         {
@@ -23,6 +23,24 @@ namespace Sitemapify.Config
                 return Registrations[typeof (T)] as T;
             }
             return null;
-        }        
+        }
+
+        public ISitemapifyConfigurer UsingContentProvider(ISitemapContentProvider contentProvider)
+        {
+            Registrations[typeof (ISitemapContentProvider)] = contentProvider;
+            return this;
+        }
+
+        public ISitemapifyConfigurer UsingCacheProvider(ISitemapCacheProvider cacheProvider)
+        {
+            Registrations[typeof(ISitemapCacheProvider)] = cacheProvider;
+            return this;
+        }
+
+        public ISitemapifyConfigurer UsingDocumentBuilder(ISitemapDocumentBuilder documentBuilder)
+        {
+            Registrations[typeof(ISitemapDocumentBuilder)] = documentBuilder;
+            return this;
+        }
     }
 }

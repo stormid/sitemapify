@@ -9,6 +9,8 @@ namespace Sitemapify
 {
     public sealed class SitemapifyHttpHandler : IHttpHandler, IRouteHandler
     {
+        public static bool ResetCache { get; set; } = false;
+
         private readonly ISitemapContentProvider _contentProvider;
         private readonly ISitemapDocumentBuilder _documentBuilder;
         private readonly ISitemapCacheProvider _sitemapCacheProvider;
@@ -33,18 +35,19 @@ namespace Sitemapify
             if (_contentProvider.Cacheable)
             {
                 context.Response.Cache.SetExpires(_contentProvider.CacheUntil);
-                context.Response.Cache.SetCacheability(HttpCacheability.Public);
+                context.Response.Cache.SetCacheability(HttpCacheability.Server);
             }
         }
 
         private XDocument GetSitemapContent()
         {
-            if (!_sitemapCacheProvider.IsCached)
+            if (!_sitemapCacheProvider.IsCached || ResetCache)
             {
                 var document = _documentBuilder.BuildSitemapXmlDocument(_contentProvider.GetSitemapUrls());
                 if (_contentProvider.Cacheable)
                 {
                     _sitemapCacheProvider.Add(document, _contentProvider.CacheUntil);
+                    ResetCache = false;
                 }
                 return document;
             }

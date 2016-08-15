@@ -49,6 +49,7 @@
     <Compile Include="Config\ConfigurationManagerUtils.cs" />
     <Compile Include="Config\DefaultSitemapContainerAdapter.cs" />
     <Compile Include="Config\ISitemapContainerAdapter.cs" />
+    <Compile Include="Config\ISitemapifyConfigurer.cs" />
     <Compile Include="Config\SitemapifyPreApplicationConfigure.cs" />
     <Compile Include="Providers\Impl\DefaultSitemapCacheProvider.cs" />
     <Compile Include="Builders\Impl\DefaultSitemapDocumentBuilder.cs" />

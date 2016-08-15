@@ -10,5 +10,7 @@ namespace Sitemapify.Providers
         bool IsCached { get; }
 
         XDocument Get();
+
+        void Remove();
     }
 }
