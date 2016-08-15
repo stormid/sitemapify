@@ -1,7 +1,6 @@
 using System;
-using System.Xml.Linq;
 
-namespace Sitemapify
+namespace Sitemapify.Models
 {
     public struct SitemapUrl
     {

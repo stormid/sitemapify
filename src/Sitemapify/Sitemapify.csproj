@@ -49,20 +49,31 @@
     <Compile Include="Config\ConfigurationManagerUtils.cs" />
     <Compile Include="Config\DefaultSitemapContainerAdapter.cs" />
     <Compile Include="Config\ISitemapContainerAdapter.cs" />
-    <Compile Include="DefaultSitemapDocumentBuilder.cs" />
-    <Compile Include="EmptySitemapContentProvider.cs" />
-    <Compile Include="EmptySitemapContentProviderFactory.cs" />
-    <Compile Include="ISitemapContentProvider.cs" />
-    <Compile Include="ISitemapContentProviderFactory.cs" />
-    <Compile Include="ISitemapDocumentBuilder.cs" />
+    <Compile Include="Config\SitemapifyPreApplicationConfigure.cs" />
+    <Compile Include="Providers\Impl\DefaultSitemapCacheProvider.cs" />
+    <Compile Include="Builders\Impl\DefaultSitemapDocumentBuilder.cs" />
+    <Compile Include="Providers\Impl\EmptySitemapContentProvider.cs" />
+    <Compile Include="Providers\ISitemapCacheProvider.cs" />
+    <Compile Include="Providers\ISitemapContentProvider.cs" />
+    <Compile Include="Builders\ISitemapDocumentBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SitemapChangeFrequency.cs" />
-    <Compile Include="Config\SitemapifyConfigure.cs" />
+    <Compile Include="Models\SitemapChangeFrequency.cs" />
+    <Compile Include="Configure.cs" />
     <Compile Include="SitemapifyHttpHandler.cs" />
-    <Compile Include="SitemapUrl.cs" />
+    <Compile Include="Models\SitemapUrl.cs" />
     <Compile Include="Extensions\SitemapUrlExtensions.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="content\web.config.install.xdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="content\web.config.uninstall.xdt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="readme.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

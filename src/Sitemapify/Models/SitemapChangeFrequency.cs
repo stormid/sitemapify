@@ -1,4 +1,4 @@
-namespace Sitemapify
+namespace Sitemapify.Models
 {
     public enum SitemapChangeFrequency
     {

@@ -109,8 +109,8 @@ Task("Copy-Files")
     EnsureDirectoryExists(buildOutput +"/Sitemapify/lib/net45");
     CopyFile("./src/Sitemapify/bin/" +configuration +"/Sitemapify.dll", buildOutput +"/Sitemapify/lib/net45/Sitemapify.dll");
     CopyFile("./src/Sitemapify/bin/" +configuration +"/Sitemapify.pdb", buildOutput +"/Sitemapify/lib/net45//Sitemapify.pdb");
-    //CopyFile("./src/Sitemapify/bin/" +configuration +"/readme.txt", buildOutput +"/Sitemapify/readme.txt");
-    //CopyDirectory("./src/Sitemapify/content", buildOutput +"/Sitemapify/content");
+    CopyFile("./src/Sitemapify/bin/" +configuration +"/readme.txt", buildOutput +"/Sitemapify/readme.txt");
+    CopyDirectory("./src/Sitemapify/content", buildOutput +"/Sitemapify/content");
 });
 
 Task("Create-NuGet-Package")

@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Sitemapify.Models;
 
-namespace Sitemapify
+namespace Sitemapify.Providers.Impl
 {
     public class EmptySitemapContentProvider : ISitemapContentProvider
     {
@@ -11,6 +12,6 @@ namespace Sitemapify
         }
 
         public bool Cacheable { get; } = true;
-        public DateTime? CacheUntil { get; } = DateTime.UtcNow.AddHours(1);
+        public DateTime CacheUntil { get; } = DateTime.UtcNow.AddHours(1);
     }
 }

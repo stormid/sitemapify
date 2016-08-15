@@ -1,26 +1,26 @@
-using System;
-using System.IO;
-using System.Runtime.Caching;
 using System.Text;
 using System.Web;
-using System.Web.Caching;
 using System.Web.Routing;
-using Sitemapify.Config;
+using System.Xml.Linq;
+using Sitemapify.Builders;
+using Sitemapify.Providers;
 
 namespace Sitemapify
 {
     public sealed class SitemapifyHttpHandler : IHttpHandler, IRouteHandler
     {
-        private readonly ISitemapContentProviderFactory _factory;
+        private readonly ISitemapContentProvider _contentProvider;
         private readonly ISitemapDocumentBuilder _documentBuilder;
+        private readonly ISitemapCacheProvider _sitemapCacheProvider;
 
-        private SitemapifyHttpHandler(ISitemapContentProviderFactory factory, ISitemapDocumentBuilder documentBuilder)
+        private SitemapifyHttpHandler(ISitemapContentProvider contentProvider, ISitemapDocumentBuilder documentBuilder, ISitemapCacheProvider sitemapCacheProvider)
         {
-            _factory = factory;
+            _contentProvider = contentProvider;
             _documentBuilder = documentBuilder;
+            _sitemapCacheProvider = sitemapCacheProvider;
         }
 
-        public SitemapifyHttpHandler() : this(SitemapifyConfigure.ContentProvider, SitemapifyConfigure.DocumentBuilder) { }
+        public SitemapifyHttpHandler() : this(Configure.ContentProvider, Configure.DocumentBuilder, Configure.CacheProvider) { }
 
         public void ProcessRequest(HttpContextBase context)
         {
@@ -28,28 +28,27 @@ namespace Sitemapify
             context.Response.Buffer = true;
             context.Response.BufferOutput = true;
             context.Response.ContentEncoding = Encoding.UTF8;
-            context.Response.Output.Write(GetSitemapContent());
+            var document = GetSitemapContent();
+            document.Save(context.Response.Output, SaveOptions.OmitDuplicateNamespaces);
+            if (_contentProvider.Cacheable)
+            {
+                context.Response.Cache.SetExpires(_contentProvider.CacheUntil);
+                context.Response.Cache.SetCacheability(HttpCacheability.Public);
+            }
         }
 
-        private string GetSitemapContent()
+        private XDocument GetSitemapContent()
         {
-            var cache = MemoryCache.Default;
-
-            var sitemapCacheContent = cache.Get(nameof(SitemapifyHttpHandler))?.ToString();
-            if (!string.IsNullOrWhiteSpace(sitemapCacheContent))
+            if (!_sitemapCacheProvider.IsCached)
             {
-                return sitemapCacheContent;
+                var document = _documentBuilder.BuildSitemapXmlDocument(_contentProvider.GetSitemapUrls());
+                if (_contentProvider.Cacheable)
+                {
+                    _sitemapCacheProvider.Add(document, _contentProvider.CacheUntil);
+                }
+                return document;
             }
-            var provider = _factory.GetProvider();
-            var sb = new StringBuilder();
-            var writer = new StringWriter(sb);
-
-            _documentBuilder.BuildSitemapXmlStream(provider.GetSitemapUrls(), writer);
-            if (provider.Cacheable)
-            {
-                cache.Add(nameof(SitemapifyHttpHandler), sb.ToString(), DateTimeOffset.UtcNow.AddHours(1));
-            }
-            return sb.ToString();
+            return _sitemapCacheProvider.Get();
         }
 
         public void ProcessRequest(HttpContext context)

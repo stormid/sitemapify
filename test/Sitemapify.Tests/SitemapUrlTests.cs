@@ -12,6 +12,7 @@ using System.Xml.XPath;
 using FluentAssertions;
 using Moq;
 using Sitemapify.Config;
+using Sitemapify.Models;
 using Xunit;
 
 namespace Sitemapify.Tests

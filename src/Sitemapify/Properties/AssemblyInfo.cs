@@ -15,4 +15,4 @@ using Sitemapify.Config;
 [assembly: ComVisible(false)]
 
 
-[assembly: PreApplicationStartMethod(typeof(SitemapifyConfigure), "Initialise")]
+[assembly: PreApplicationStartMethod(typeof(SitemapifyPreApplicationConfigure), "Initialise")]
