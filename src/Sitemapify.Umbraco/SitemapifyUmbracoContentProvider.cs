@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using Sitemapify.Models;
 using Sitemapify.Providers;
+using Sitemapify.Umbraco.Config;
 using Sitemapify.Umbraco.Extensions;
 using Umbraco.Core;
 using Umbraco.Core.Models;
@@ -14,15 +16,14 @@ namespace Sitemapify.Umbraco
 {
     public class SitemapifyUmbracoContentProvider : ISitemapContentProvider
     {
-        protected virtual string ExcludedFromSitemapPropertyAlias { get; } = "umbracoNaviHide";
-        protected virtual string ExcludedChildrenFromSitemapPropertyAlias { get; } = "sitemapifyExcludeChildren";
+        private readonly ISitemapifyUmbracoContentProviderSettings _settings;
 
-        public SitemapifyUmbracoContentProvider(string excludedFromSitemapPropertyAlias = "umbracoNaviHide",
-            string excludedChildrenFromSitemapPropertyAlias = "sitemapifyExcludeChildren")
+        protected SitemapifyUmbracoContentProvider(ISitemapifyUmbracoContentProviderSettings settings)
         {
-            ExcludedFromSitemapPropertyAlias = excludedFromSitemapPropertyAlias;
-            ExcludedChildrenFromSitemapPropertyAlias = excludedChildrenFromSitemapPropertyAlias;
+            _settings = settings;
         }
+
+        public SitemapifyUmbracoContentProvider() : this(SitemapifyUmbracoContentProviderSettings.Current) { }
 
         protected UmbracoContext GetUmbracoContext()
         {
@@ -36,7 +37,7 @@ namespace Sitemapify.Umbraco
             if (ctx != null)
             {
                 var home = FromContent(ctx);
-                return home.AllChildren(c => !c.HideFromSitemap(ExcludedFromSitemapPropertyAlias), c => !c.HideChildrenFromSitemap(ExcludedChildrenFromSitemapPropertyAlias)).Select(CreateSitemapUrlForContent);
+                return home.AllChildren(c => !c.HideFromSitemap(_settings.ExcludedFromSitemapPropertyAlias), c => !c.HideChildrenFromSitemap(_settings.ExcludedChildrenFromSitemapPropertyAlias)).Select(CreateSitemapUrlForContent);
             }
             return Enumerable.Empty<SitemapUrl>();
         }

@@ -14,7 +14,7 @@
 
   <system.webServer>
     <handlers>
-      <add name="Sitemapify" verb="GET" path="sitemap.xml" type="Sitemapify.SitemapifyHttpHandler, Sitemapify" xdt:transform="Remove" />
+      <add name="Sitemapify" verb="GET" path="sitemap.xml" type="Sitemapify.SitemapifyHttpHandler, Sitemapify" xdt:transform="Remove" xdt:Locator="Match(name)" />
     </handlers>
     <handlers xdt:Locator="Condition(count(*) = 0)" xdt:Transform="Remove" />
   </system.webServer>

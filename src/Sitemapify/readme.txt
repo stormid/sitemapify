@@ -22,20 +22,3 @@ The installation process should have updated your web.config file to include a h
     </handlers>
   </system.webServer>
 </configuration>
-
-
-Configuration
-~~~~~~~~~~~~~
-
-Once installed you can create an ApplicationEventHandler to configure Sitemapify to use the available "Umbraco Content Provider" to generate sitemap url that form the sitemap.xml:
-
-public class SitemapifyApplicationEventHandler : ApplicationEventHandler
-{
-    protected override void ApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
-    {
-        Configure.With(config => config.UsingContentProvider(new SitemapifyUmbracoContentProvider()));
-    }
-
-    protected override bool ExecuteWhenApplicationNotConfigured { get; } = false;
-    protected override bool ExecuteWhenDatabaseNotConfigured { get; } = false;
-}
