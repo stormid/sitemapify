@@ -39,3 +39,15 @@ public class SitemapifyApplicationEventHandler : ApplicationEventHandler
     protected override bool ExecuteWhenApplicationNotConfigured { get; } = false;
     protected override bool ExecuteWhenDatabaseNotConfigured { get; } = false;
 }
+
+By default the Umbraco content provider will look for content node properties with specific names to determine whether a particular node should be included in the generated sitemap file, these property names are:
+
+* umbracoNaviHide				- True/False to determine whether this node is included (Default: false)
+* sitemapifyExcludeChildren		- True/False to determine whether to ignore all child nodes below this node (Default: false)
+
+If you want to alter these property aliases you can override them via application settings:
+
+<appSettings>
+	<add key="Sitemapify.Umbraco:ExcludedFromSitemapPropertyAlias" value="newPropertyAlias" />
+	<add key="Sitemapify.Umbraco:ExcludedChildrenFromSitemapPropertyAlias" value="anotherPropertyAlias" />
+</appSettings>
