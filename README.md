@@ -15,7 +15,17 @@ The installation process should have updated your web.config file to include a h
 ```
 
 ## Customisation
-The sitemap handler can be customised by altering the base configuration via the ```Sitemapify.Configure``` static configuration class.  Sitemapify is split into providers that are responsible for elements of the sitemap generation.
+The sitemap handler can be customised by altering the base configuration via the ```Sitemapify.Configure``` static configuration class.  
+
+```c#
+Sitemapify.Configure(c => c
+  .UsingContentProvider(new YourContentProvider())
+  .UsingCacheProvider(new YourCacheProvider())
+  .UsingDocumentBuilder(new YourDocumentBuilder())
+);
+```
+
+Sitemapify is split into providers that are responsible for elements of the sitemap generation.
 
 ### Content Provider (`ISitemapifyContentProvider`)
 An implementation of a content provider supplies Sitemapify with a collection of `SitemapUrl` objects representing the nodes to output within the sitemap.
