@@ -189,9 +189,7 @@ Task("Upload-AppVeyor-Artifacts")
     .Does(() =>
 {
     foreach(var artifact in System.IO.Directory.EnumerateFiles(artifacts.ToString() +"/packages", "*.nupkg")) {
-        AppVeyor.UploadArtifact(artifact, settings => settings
-            .SetArtifactType(AppVeyorUploadArtifactType.NuGetPackage)
-        );    
+        AppVeyor.UploadArtifact(artifact);
     }
 });
 
