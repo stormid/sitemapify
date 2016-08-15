@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitemapify.Umbraco", "src\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitemapifyUmbracoSample", "sample\SitemapifyUmbracoSample\SitemapifyUmbracoSample.csproj", "{B9A91429-FB57-4568-8D88-804A9E00BAEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitemapify.CastleWindsor", "src\Sitemapify.CastleWindsor\Sitemapify.CastleWindsor.csproj", "{D8A6AE48-A51D-4CF4-BCD1-47036A7443D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{B9A91429-FB57-4568-8D88-804A9E00BAEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9A91429-FB57-4568-8D88-804A9E00BAEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9A91429-FB57-4568-8D88-804A9E00BAEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8A6AE48-A51D-4CF4-BCD1-47036A7443D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8A6AE48-A51D-4CF4-BCD1-47036A7443D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8A6AE48-A51D-4CF4-BCD1-47036A7443D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8A6AE48-A51D-4CF4-BCD1-47036A7443D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +61,6 @@ Global
 		{4E4129F4-0FEB-4A66-8DEC-3E80D5764F80} = {F9DFA62C-7451-4648-BF0D-23C8E821D9E2}
 		{1BC1FBB9-9E9E-417B-8BDC-A519FE7D4296} = {84B1F178-A2EC-4349-A23F-85BE79C8BFF7}
 		{B9A91429-FB57-4568-8D88-804A9E00BAEA} = {F9DFA62C-7451-4648-BF0D-23C8E821D9E2}
+		{D8A6AE48-A51D-4CF4-BCD1-47036A7443D4} = {84B1F178-A2EC-4349-A23F-85BE79C8BFF7}
 	EndGlobalSection
 EndGlobal

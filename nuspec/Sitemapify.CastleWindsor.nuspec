@@ -1,19 +1,18 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>Sitemapify.Umbraco</id>
-    <title>Sitemapify Umbraco - Sitemap generator for Umbraco CMS using Sitemapify</title>
-	  <description>Provides a ASP.NET HttpHandler to assist with generating a dynamic sitemap.xml file for Umbraco CMS content nodes</description>
+    <id>Sitemapify.CastleWindsor</id>
+    <title>Sitemapify Castle Windsor Adapter</title>
+	  <description>Provides a castle windsor adapter for the sitemapify ASP.NET sitemap handler</description>
     <authors>Phil Oyston</authors>
     <owners>Phil Oyston</owners>
     <licenseUrl>https://raw.githubusercontent.com/stormid/sitemapify/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/stormid/sitemapify</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/stormid/sitemapify/master/docs/img/sitemap.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <tags>sitemap seo webforms mvc umbraco</tags>
+    <tags>sitemap seo webforms mvc castle windsor</tags>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.Web" targetFramework="net40" />
-      <frameworkAssembly assemblyName="System.Configuration" targetFramework="net40" />
     </frameworkAssemblies>    
   </metadata>
   <files>

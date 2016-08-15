@@ -114,14 +114,18 @@ Task("Copy-Files")
 
     EnsureDirectoryExists(buildOutput +"/Sitemapify.Umbraco");
     EnsureDirectoryExists(buildOutput +"/Sitemapify.Umbraco/lib/net45");
-    CopyFile("./src/Sitemapify.Umbraco/bin/" +configuration +"/Sitemapify.Umbraco.dll", buildOutput +"/Sitemapify.Umbraco/lib/net45/Sitemapify.dll");
-    CopyFile("./src/Sitemapify.Umbraco/bin/" +configuration +"/Sitemapify.Umbraco.pdb", buildOutput +"/Sitemapify.Umbraco/lib/net45//Sitemapify.pdb");    
+    CopyFile("./src/Sitemapify.Umbraco/bin/" +configuration +"/Sitemapify.Umbraco.dll", buildOutput +"/Sitemapify.Umbraco/lib/net45/Sitemapify.Umbraco.dll");
+    CopyFile("./src/Sitemapify.Umbraco/bin/" +configuration +"/Sitemapify.Umbraco.pdb", buildOutput +"/Sitemapify.Umbraco/lib/net45//Sitemapify.Umbraco.pdb");    
+
+    EnsureDirectoryExists(buildOutput +"/Sitemapify.CastleWindsor");
+    EnsureDirectoryExists(buildOutput +"/Sitemapify.CastleWindsor/lib/net45");
+    CopyFile("./src/Sitemapify.CastleWindsor/bin/" +configuration +"/Sitemapify.CastleWindsor.dll", buildOutput +"/Sitemapify.CastleWindsor/lib/net45/Sitemapify.CastleWindsor.dll");
+    CopyFile("./src/Sitemapify.CastleWindsor/bin/" +configuration +"/Sitemapify.CastleWindsor.pdb", buildOutput +"/Sitemapify.CastleWindsor/lib/net45//Sitemapify.CastleWindsor.pdb");    
 });
 
 Task("Create-NuGet-Package")
     .IsDependentOn("Build")
     .IsDependentOn("Copy-Files")
-    .WithCriteria(() => FileExists("./nuspec/Sitemapify.nuspec"))
     .Does(() => 
 {
     EnsureDirectoryExists(artifacts +"/packages/");
@@ -153,6 +157,22 @@ Task("Create-NuGet-Package")
             new NuSpecDependency { Id = "Sitemapify", Version = "[" +versionInfo.NuGetVersionV2 +"]"}
         }
     });    
+
+    NuGetPack("./nuspec/Sitemapify.CastleWindsor.nuspec", new NuGetPackSettings {
+        BasePath = buildOutput +"/Sitemapify.CastleWindsor",
+        Properties = new Dictionary<string, string> { { "Configuration", configuration }},
+        Symbols = false,
+        NoPackageAnalysis = true,
+        Version = versionInfo.NuGetVersionV2,
+        OutputDirectory = artifacts +"/packages/",
+        Files = new[] {
+            new NuSpecContent { Source = "**/*", Target = "" },
+        },
+        Dependencies = new[] {
+            new NuSpecDependency { Id = "Castle.Windsor", Version = "[3.1,4]" },
+            new NuSpecDependency { Id = "Sitemapify", Version = "[" +versionInfo.NuGetVersionV2 +"]"}
+        }
+    });      
 });
 
 Task("Update-AppVeyor-Build-Number")
