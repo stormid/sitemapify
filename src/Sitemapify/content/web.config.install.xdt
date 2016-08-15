@@ -11,11 +11,17 @@
       </xs:complexType>
     </xs:element>
   </xs:schema>
+
+  <system.web xdt:Transform="InsertIfMissing">
+    <httpHandlers xdt:Transform="InsertIfMissing">
+      <add verb="GET" path="sitemap.xml"  type="Sitemapify.SitemapifyHttpHandler, Sitemapify" xdt:Transform="InsertIfMissing" xdt:Locator="Condition(@path='sitemap.xml')"/>
+    </httpHandlers>
+  </system.web>
   
   <system.webServer xdt:Transform="InsertIfMissing">
     <handlers xdt:Transform="InsertIfMissing">
-      <remove name="Sitemapify" xdt:transform="InsertIfMissing" xdt:locator="Match(name)" />
-      <add name="Sitemapify" verb="GET" path="sitemap.xml" type="Sitemapify.SitemapifyHttpHandler, Sitemapify" xdt:transform="InsertIfMissing" xdt:locator="Match(name)" />
+      <remove name="Sitemapify" xdt:Transform="InsertIfMissing" xdt:Locator="Condition(@name='Sitemapify')"/>
+      <add name="Sitemapify" verb="GET" path="sitemap.xml" type="Sitemapify.SitemapifyHttpHandler, Sitemapify" xdt:transform="InsertIfMissing" xdt:locator="Condition(@name='Sitemapify')" />
     </handlers>
   </system.webServer>
 </configuration>
