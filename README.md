@@ -1,6 +1,8 @@
 # Sitemapify
 Provides a ASP.NET HttpHandler to assist with generating a dynamic sitemap.xml file
 
+There is also an Umbraco specific extension to Sitemapify that supports building the sitemap from Umbraco CMS content.  See [Sitemapify.Umbraco](https://github.com/stormid/Sitemapify/tree/master/src/Sitemapify.Umbraco) for further documentation
+
 ## Installation
 The installation process should have updated your web.config file to include a httphandler to process requests to `sitemap.xml`, it should look similar to:
 
