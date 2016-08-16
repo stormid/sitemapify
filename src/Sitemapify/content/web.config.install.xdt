@@ -21,7 +21,7 @@
   <system.webServer xdt:Transform="InsertIfMissing">
     <handlers xdt:Transform="InsertIfMissing">
       <remove name="Sitemapify" xdt:Transform="InsertIfMissing" xdt:Locator="Condition(@name='Sitemapify')"/>
-      <add name="Sitemapify" verb="GET" path="sitemap.xml" type="Sitemapify.SitemapifyHttpHandler, Sitemapify" xdt:transform="InsertIfMissing" xdt:locator="Condition(@name='Sitemapify')" />
+      <add name="Sitemapify" verb="GET" path="sitemap.xml" type="Sitemapify.SitemapifyHttpHandler, Sitemapify" xdt:Transform="InsertIfMissing" xdt:Locator="Condition(@name='Sitemapify')" />
     </handlers>
   </system.webServer>
 </configuration>
