@@ -63,3 +63,36 @@ public interface ISitemapDocumentBuilder
     XDocument BuildSitemapXmlDocument(IEnumerable<SitemapUrl> sitemapUrls);
 }
 ```
+
+## Sitemapify.Umbraco Configuration
+
+Once you have installed Sitemapify.Umbraco you can create an ApplicationEventHandler to configure Sitemapify to use the available "Umbraco Content Provider" to generate sitemap url that form the sitemap.xml.
+
+```c#
+public class SitemapifyApplicationEventHandler : ApplicationEventHandler
+{
+    protected override void ApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+    {
+        Configure.With(config => config
+          .UsingContentProvider(new SitemapifyUmbracoContentProvider())
+        );
+    }
+
+    protected override bool ExecuteWhenApplicationNotConfigured { get; } = false;
+    protected override bool ExecuteWhenDatabaseNotConfigured { get; } = false;
+}
+```
+
+By default the Umbraco content provider will look for content node properties with specific names to determine whether a particular node should be included in the generated sitemap file, these property names are:
+
+* `umbracoNaviHide`	- True/False to determine whether this node is included (Default: false)
+* `sitemapifyExcludeChildren`	- True/False to determine whether to ignore all child nodes below this node (Default: false)
+
+If you want to alter these property aliases you can override them via application settings:
+
+```xml
+<appSettings>
+	<add key="Sitemapify.Umbraco:ExcludedFromSitemapPropertyAlias" value="newPropertyAlias" />
+	<add key="Sitemapify.Umbraco:ExcludedChildrenFromSitemapPropertyAlias" value="anotherPropertyAlias" />
+</appSettings>
+```
