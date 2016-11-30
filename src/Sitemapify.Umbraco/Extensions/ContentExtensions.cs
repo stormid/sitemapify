@@ -24,7 +24,7 @@ namespace Sitemapify.Umbraco.Extensions
             {
                 foreach (var child in node.Children(predicate))
                 {
-                    foreach (var grandChild in child.AllChildren(predicate))
+                    foreach (var grandChild in child.AllChildren(predicate, includeChildren))
                         yield return grandChild;
                 }
             }

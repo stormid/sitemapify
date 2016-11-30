@@ -21,6 +21,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SitemapifyUmbracoSample", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sitemapify.CastleWindsor", "src\Sitemapify.CastleWindsor\Sitemapify.CastleWindsor.csproj", "{D8A6AE48-A51D-4CF4-BCD1-47036A7443D4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0D96622F-D175-48DC-B230-675BFA77A987}"
+	ProjectSection(SolutionItems) = preProject
+		cake.config = cake.config
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
