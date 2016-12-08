@@ -6,7 +6,7 @@ namespace Sitemapify.Providers
 {
     public interface ISitemapContentProvider
     {
-        IEnumerable<SitemapUrl> GetSitemapUrls();
+        IEnumerable<SitemapUrl> GetSitemapUrls(Uri baseUrl);
         bool Cacheable { get; }
         DateTime CacheUntil { get; }
     }

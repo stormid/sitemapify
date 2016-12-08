@@ -27,6 +27,6 @@ namespace Sitemapify.Builders.Impl
             };
 
             return new XDocument(new XDeclaration("1.0", "utf-8", "yes"), headerComments, new XElement(XName.Get("urlset", SitemapUrl.SitemapNs), elements));
-        }
+        }        
     }
 }

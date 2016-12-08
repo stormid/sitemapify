@@ -1,25 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Xml.Linq;
-using Sitemapify;
-using Sitemapify.Providers;
-using Sitemapify.Providers.Impl;
+using Sitemapify.Config;
 using Sitemapify.Umbraco;
-using Umbraco.Core;
-using Umbraco.Core.Persistence.Migrations.Upgrades.TargetVersionSix;
+using Sitemapify.Umbraco.Events;
 
 namespace SitemapifyUmbracoSample.Code
 {
-    public class SitemapifyApplicationEventHandler : ApplicationEventHandler
+    public class MySitemapifyUmbracoContentProvider : SitemapifyUmbracoContentProvider
     {
-        protected override void ApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
+        protected override Uri GetBaseUrl(Uri baseUri)
         {
-            Configure.With(config => config.UsingContentProvider(new SitemapifyUmbracoContentProvider()));
+            return new Uri("https://github.com/stormid/sitemapify", UriKind.Absolute);
         }
+    }
 
-        protected override bool ExecuteWhenApplicationNotConfigured { get; } = false;
-        protected override bool ExecuteWhenDatabaseNotConfigured { get; } = false;
+    public class SitemapifyApplicationEventHandler : AbstractSitemapifyApplicationEventHandler
+    {
+        protected override void ConfigureWith(ISitemapifyConfigurer configure)
+        {
+            configure.UsingContentProvider(new MySitemapifyUmbracoContentProvider());
+        }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using Sitemapify.Models;
 using Sitemapify.Providers;
+using Sitemapify.Providers.Impl;
 using Sitemapify.Umbraco.Config;
 using Sitemapify.Umbraco.Extensions;
 using Umbraco.Core;
@@ -14,7 +15,7 @@ using Umbraco.Web.Security;
 
 namespace Sitemapify.Umbraco
 {
-    public class SitemapifyUmbracoContentProvider : ISitemapContentProvider
+    public class SitemapifyUmbracoContentProvider : EmptySitemapContentProvider
     {
         private readonly ISitemapifyUmbracoContentProviderSettings _settings;
 
@@ -31,32 +32,72 @@ namespace Sitemapify.Umbraco
             return UmbracoContext.EnsureContext(httpContextWrapper, ApplicationContext.Current, new WebSecurity(httpContextWrapper, ApplicationContext.Current));
         }
 
-        public IEnumerable<SitemapUrl> GetSitemapUrls()
+        public sealed override IEnumerable<SitemapUrl> GetSitemapUrls(Uri baseUrl)
         {
             var ctx = GetUmbracoContext();
             if (ctx != null)
             {
-                var home = FromContent(ctx);
-                return home
-                    .DescendantSitemapNodes(_settings.ExcludedFromSitemapPropertyAlias, _settings.ExcludedChildrenFromSitemapPropertyAlias)
-                    .Where(node => node.ItemType == PublishedItemType.Content)
-                    .Select(CreateSitemapUrlForContent);
+                var root = FromContent(ctx);
+                if (root.ItemType != PublishedItemType.Content)
+                {
+                    return Enumerable.Empty<SitemapUrl>();
+                }
+
+                var overrideBaseUrl = GetBaseUrl(baseUrl);
+                if (overrideBaseUrl.IsAbsoluteUri)
+                {
+                    return root
+                        .DescendantSitemapNodes(_settings.ExcludedFromSitemapPropertyAlias, _settings.ExcludedChildrenFromSitemapPropertyAlias)
+                        .Where(node => node.ItemType == PublishedItemType.Content)
+                        .Select(content => CreateSitemapUrlForContent(content, overrideBaseUrl));
+                }
             }
             return Enumerable.Empty<SitemapUrl>();
         }
 
+        /// <summary>
+        /// Must return an absolute uri, otherwise the sitemap will be returned blank
+        /// </summary>
+        /// <param name="baseUri"></param>
+        /// <returns></returns>
+        protected virtual Uri GetBaseUrl(Uri baseUri)
+        {
+            return baseUri;
+        }
+
+        /// <summary>
+        /// The content node from which the sitemap should start
+        /// </summary>
+        /// <param name="context">The Umbraco context</param>
+        /// <returns>A content node, media nodes are not supported</returns>
         protected virtual IPublishedContent FromContent(UmbracoContext context)
         {
             return context.ContentCache.GetByRoute("/");
         }
 
-        public virtual bool Cacheable { get; } = true;
+        public override bool Cacheable { get; } = true;
 
-        public virtual DateTime CacheUntil { get; } = DateTime.UtcNow.AddHours(1);
+        public override DateTime CacheUntil { get; } = DateTime.UtcNow.AddHours(1);
 
-        protected virtual SitemapUrl CreateSitemapUrlForContent(IPublishedContent content)
+        private static SitemapUrl CreateSitemapUrlForContent(IPublishedContent content, Uri authorityUri)
         {
-            return SitemapUrl.Create(content.UrlAbsolute(), content.UpdateDate);
+            var ub = new UriBuilder(authorityUri)
+            {
+                Path = content.Url()
+            };
+            var absoluteUri = ub.Uri.ToString().TrimEnd("/");
+            return SitemapUrl.Create(absoluteUri, content.UpdateDate);
+
+            //var absoluteUri = content.UrlAbsolute();
+            //if (!Uri.IsWellFormedUriString(absoluteUri, UriKind.Absolute))
+            //{
+            //    var ub = new UriBuilder(authorityUri)
+            //    {
+            //        Path = content.Url()
+            //    };
+            //    absoluteUri = ub.ToString().TrimEnd("/");
+            //}
+            //return SitemapUrl.Create(absoluteUri, content.UpdateDate);
         }
     }
 }

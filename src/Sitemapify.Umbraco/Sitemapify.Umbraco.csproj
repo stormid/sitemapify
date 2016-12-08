@@ -228,7 +228,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\ConfigurationManagerUtils.cs" />
-    <Compile Include="Events\SitemapifyApplicationEventHandler.cs" />
+    <Compile Include="Events\AbstractSitemapifyApplicationEventHandler.cs" />
     <Compile Include="Events\SitemapifyCacheClearApplicationEventHandler.cs" />
     <Compile Include="Extensions\ContentExtensions.cs" />
     <Compile Include="Config\FromConfigSitemapifyUmbracoContentProviderSettings.cs" />

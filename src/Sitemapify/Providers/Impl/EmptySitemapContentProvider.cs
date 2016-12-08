@@ -6,9 +6,10 @@ namespace Sitemapify.Providers.Impl
 {
     public class EmptySitemapContentProvider : ISitemapContentProvider
     {
-        public virtual IEnumerable<SitemapUrl> GetSitemapUrls()
+        public virtual IEnumerable<SitemapUrl> GetSitemapUrls(Uri baseUrl)
         {
-            yield return SitemapUrl.Create("/");
+            var ub = new UriBuilder(baseUrl) {Path = "/"};
+            yield return SitemapUrl.Create(ub.ToString());
         }
 
         public virtual bool Cacheable { get; } = true;

@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using System.Web;
 using System.Web.Routing;
@@ -30,7 +31,7 @@ namespace Sitemapify
             context.Response.Buffer = true;
             context.Response.BufferOutput = true;
             context.Response.ContentEncoding = Encoding.UTF8;
-            var document = GetSitemapContent();
+            var document = GetSitemapContent(context.Request);
             document.Save(context.Response.Output, SaveOptions.OmitDuplicateNamespaces);
             if (_contentProvider.Cacheable)
             {
@@ -39,17 +40,22 @@ namespace Sitemapify
             }
         }
 
-        private XDocument GetSitemapContent()
+        private XDocument GetSitemapContent(HttpRequestBase contextRequest)
         {
             if (!_sitemapCacheProvider.IsCached || ResetCache)
             {
-                var document = _documentBuilder.BuildSitemapXmlDocument(_contentProvider.GetSitemapUrls());
-                if (_contentProvider.Cacheable)
+                var baseUrl = contextRequest.Url?.GetLeftPart(UriPartial.Authority);
+                if (!string.IsNullOrWhiteSpace(baseUrl) && Uri.IsWellFormedUriString(baseUrl, UriKind.Absolute))
                 {
-                    _sitemapCacheProvider.Add(document, _contentProvider.CacheUntil);
-                    ResetCache = false;
+                    var authorityUri = new Uri(baseUrl, UriKind.Absolute);
+                    var document = _documentBuilder.BuildSitemapXmlDocument(_contentProvider.GetSitemapUrls(authorityUri));
+                    if (_contentProvider.Cacheable)
+                    {
+                        _sitemapCacheProvider.Add(document, _contentProvider.CacheUntil);
+                        ResetCache = false;
+                    }
+                    return document;
                 }
-                return document;
             }
             return _sitemapCacheProvider.Get();
         }
