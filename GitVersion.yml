@@ -1,6 +1,5 @@
-mode: ContinuousDelivery
+mode: ContinuousDeployment
 branches:
   master: {}
 ignore:
   sha: []
-
