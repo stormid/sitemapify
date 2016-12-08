@@ -6,12 +6,12 @@ namespace Sitemapify.Providers.Impl
 {
     public class EmptySitemapContentProvider : ISitemapContentProvider
     {
-        public IEnumerable<SitemapUrl> GetSitemapUrls()
+        public virtual IEnumerable<SitemapUrl> GetSitemapUrls()
         {
             yield return SitemapUrl.Create("/");
         }
 
-        public bool Cacheable { get; } = true;
-        public DateTime CacheUntil { get; } = DateTime.UtcNow.AddHours(1);
+        public virtual bool Cacheable { get; } = true;
+        public virtual DateTime CacheUntil { get; } = DateTime.UtcNow.AddHours(1);
     }
 }

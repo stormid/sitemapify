@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Sitemapify.Builders;
 using Sitemapify.Builders.Impl;
 using Sitemapify.Providers;
@@ -7,6 +8,7 @@ using Sitemapify.Providers.Impl;
 
 namespace Sitemapify.Config
 {
+    [DebuggerStepThrough]
     public class DefaultSitemapContainerAdapter : ISitemapContainerAdapter, ISitemapifyConfigurer
     {
         private static readonly IDictionary<Type, object> Registrations = new Dictionary<Type, object>()

@@ -37,7 +37,10 @@ namespace Sitemapify.Umbraco
             if (ctx != null)
             {
                 var home = FromContent(ctx);
-                return home.AllChildren(c => !c.HideFromSitemap(_settings.ExcludedFromSitemapPropertyAlias), c => !c.HideChildrenFromSitemap(_settings.ExcludedChildrenFromSitemapPropertyAlias)).Select(CreateSitemapUrlForContent);
+                return home
+                    .DescendantSitemapNodes(_settings.ExcludedFromSitemapPropertyAlias, _settings.ExcludedChildrenFromSitemapPropertyAlias)
+                    .Where(node => node.ItemType == PublishedItemType.Content)
+                    .Select(CreateSitemapUrlForContent);
             }
             return Enumerable.Empty<SitemapUrl>();
         }

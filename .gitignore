@@ -256,3 +256,7 @@ paket-files/
 !/tools/package.config
 /artifacts
 VersionAssemblyInfo.*
+
+# Umbraco
+sample/SitemapifyUmbracoSample/App_Data/TEMP
+sample/SitemapifyUmbracoSample/App_Data/Logs

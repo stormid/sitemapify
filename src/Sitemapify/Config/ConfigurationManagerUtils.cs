@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace Sitemapify.Config
 {
+    [DebuggerStepThrough]
     internal static class ConfigurationManagerUtils
     {
         public static string FromAppSettings(this string key)

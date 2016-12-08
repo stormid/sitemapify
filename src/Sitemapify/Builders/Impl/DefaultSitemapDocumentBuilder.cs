@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
@@ -8,6 +9,7 @@ using Sitemapify.Models;
 
 namespace Sitemapify.Builders.Impl
 {
+    [DebuggerStepThrough]
     public class DefaultSitemapDocumentBuilder : ISitemapDocumentBuilder
     {
         public XDocument BuildSitemapXmlDocument(IEnumerable<SitemapUrl> sitemapUrls)
@@ -20,7 +22,7 @@ namespace Sitemapify.Builders.Impl
             {
                 new XComment($" {description} "),
                 new XComment($" Version: {assemblyName.Version} "),
-                new XComment($" Generated: {DateTime.UtcNow.ToString("O")} ")
+                new XComment($" Generated: {DateTime.UtcNow:O} ")
 
             };
 
