@@ -22,8 +22,8 @@ namespace Sitemapify.Builders.Impl
             {
                 new XComment($" {description} "),
                 new XComment($" Version: {assemblyName.Version} "),
-                new XComment($" Generated: {DateTime.UtcNow:O} ")
-
+                new XComment($" Generated: {DateTime.UtcNow:O} "),
+                new XComment($" Count: {elements.Count} ")
             };
 
             return new XDocument(new XDeclaration("1.0", "utf-8", "yes"), headerComments, new XElement(XName.Get("urlset", SitemapUrl.SitemapNs), elements));
