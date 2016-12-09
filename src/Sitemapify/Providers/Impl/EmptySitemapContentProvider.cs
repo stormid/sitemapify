@@ -1,18 +1,25 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sitemapify.Models;
 
 namespace Sitemapify.Providers.Impl
 {
-    public class EmptySitemapContentProvider : ISitemapContentProvider
+    public class EmptySitemapContentProvider : AbstractSitemapContentProvider<object>
     {
-        public virtual IEnumerable<SitemapUrl> GetSitemapUrls(Uri baseUrl)
+        protected override SitemapUrl CreateSitemapUrl(object entry, Uri baseUri)
         {
-            var ub = new UriBuilder(baseUrl) {Path = "/"};
-            yield return SitemapUrl.Create(ub.ToString());
+            var ub = new UriBuilder(baseUri)
+            {
+                Path = "/"
+                
+            };
+            return SitemapUrl.Create(ub.Uri.ToString(), changeFreq: SitemapChangeFrequency.Never);
         }
 
-        public virtual bool Cacheable { get; } = true;
-        public virtual DateTime CacheUntil { get; } = DateTime.UtcNow.AddHours(1);
+        protected override IEnumerable<object> GetSitemapEntries()
+        {
+            return Enumerable.Empty<object>();
+        }
     }
 }
