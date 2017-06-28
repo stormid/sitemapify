@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
-using System.Xml.XPath;
 using FluentAssertions;
 using Moq;
-using Sitemapify.Config;
 using Sitemapify.Models;
+using Sitemapify.Providers;
 using Xunit;
 
 namespace Sitemapify.Tests
@@ -31,9 +27,19 @@ namespace Sitemapify.Tests
         {
             var sb = new StringBuilder();
             var responseWriter = new StringWriter(sb);
+            var contentProvider = new Mock<ISitemapContentProvider>();
+            contentProvider.Setup(s => s.GetSitemapUrls(It.IsAny<Uri>()))
+                .Returns(() => new List<SitemapUrl>
+                {
+                    SitemapUrl.Create("http://localtest.me/index.html", DateTimeOffset.UtcNow),
+                    SitemapUrl.Create("http://localtest.me/search.html", DateTime.Now.AddMinutes(-5)),
+                    SitemapUrl.Create("http://localtest.me/date.html", DateTime.UtcNow.Date)
+                });
+
+            Configure.With(c => c.UsingContentProvider(contentProvider.Object));
 
             var httpContext = new Mock<HttpContextBase>(MockBehavior.Loose);
-            httpContext.Setup(s => s.Request).Returns(() => new HttpRequestWrapper(new HttpRequest("sitemap.xml", "sitemap.xml", "")));
+            httpContext.Setup(s => s.Request).Returns(() => new HttpRequestWrapper(new HttpRequest("sitemap.xml", "http://localtest.me/sitemap.xml", "")));
             httpContext.Setup(s => s.Response).Returns(() => new HttpResponseWrapper(new HttpResponse(responseWriter)));
 
             var handler = new SitemapifyHttpHandler();
@@ -43,7 +49,7 @@ namespace Sitemapify.Tests
             (from urls in
                     document.Descendants(XName.Get("urlset", SitemapUrl.SitemapNs))
                         .Elements(XName.Get("url", SitemapUrl.SitemapNs))
-             select urls).Count().Should().Be(1);
+             select urls).Count().Should().Be(3);
         }
     }
 
