@@ -17,7 +17,7 @@ namespace Sitemapify.Models
         /// Example: 2005-05-10 Lastmod may also contain a timestamp. 
         /// Example: 2005-05-10T17:33:30+08:00
         /// </summary>
-        public DateTime? Lastmod { get; }
+        public DateTimeOffset? Lastmod { get; }
 
         /// <summary>
         /// OPTIONAL: Indicates how frequently the content at a particular URL is likely to change. 
@@ -33,7 +33,7 @@ namespace Sitemapify.Models
         /// </summary>
         public double? Priority { get; }
 
-        internal SitemapUrl(string loc, DateTime? lastmod = null, SitemapChangeFrequency? changeFreq = null, double? priority = null)
+        internal SitemapUrl(string loc, DateTimeOffset? lastmod = null, SitemapChangeFrequency? changeFreq = null, double? priority = null)
         {
             Loc = loc;
             Lastmod = lastmod;
@@ -41,7 +41,7 @@ namespace Sitemapify.Models
             Priority = priority;
         }
 
-        public static SitemapUrl Create(string loc, DateTime? lastmod = null, SitemapChangeFrequency? changeFreq = null, double? priority = null)
+        public static SitemapUrl Create(string loc, DateTimeOffset? lastmod = null, SitemapChangeFrequency? changeFreq = null, double? priority = null)
         {
             return new SitemapUrl(loc, lastmod, changeFreq, priority);
         }
