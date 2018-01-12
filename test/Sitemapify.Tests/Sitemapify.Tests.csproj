@@ -79,6 +79,7 @@
     </Compile>
     <Compile Include="SitemapUrlTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UseCultureAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
