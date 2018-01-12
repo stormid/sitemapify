@@ -39,7 +39,8 @@ namespace Sitemapify.Tests
             Configure.With(c => c.UsingContentProvider(contentProvider.Object));
 
             var httpContext = new Mock<HttpContextBase>(MockBehavior.Loose);
-            httpContext.Setup(s => s.Request).Returns(() => new HttpRequestWrapper(new HttpRequest("sitemap.xml", "http://localtest.me/sitemap.xml", "")));
+            httpContext.Setup(s => s.Request).Returns(() =>
+                new HttpRequestWrapper(new HttpRequest("sitemap.xml", "http://localtest.me/sitemap.xml", "")));
             httpContext.Setup(s => s.Response).Returns(() => new HttpResponseWrapper(new HttpResponse(responseWriter)));
 
             var handler = new SitemapifyHttpHandler();
@@ -49,7 +50,43 @@ namespace Sitemapify.Tests
             (from urls in
                     document.Descendants(XName.Get("urlset", SitemapUrl.SitemapNs))
                         .Elements(XName.Get("url", SitemapUrl.SitemapNs))
-             select urls).Count().Should().Be(3);
+                select urls).Count().Should().Be(3);
+        }
+
+        [Fact]
+        [UseCultureAttribute("fr-FR")]
+        public void SitemapUrlPriorityShouldBeInvariantCulture()
+        {
+            var sb = new StringBuilder();
+            var responseWriter = new StringWriter(sb);
+            var contentProvider = new Mock<ISitemapContentProvider>();
+            contentProvider.Setup(s => s.GetSitemapUrls(It.IsAny<Uri>()))
+                .Returns(() => new List<SitemapUrl>
+                {
+                    SitemapUrl.Create("http://localtest.me/index.html", DateTimeOffset.UtcNow, priority: 1.1)
+                });
+
+            Configure.With(c => c.UsingContentProvider(contentProvider.Object));
+
+            var httpContext = new Mock<HttpContextBase>(MockBehavior.Loose);
+            httpContext.Setup(s => s.Request).Returns(() =>
+                new HttpRequestWrapper(new HttpRequest("sitemap.xml", "http://localtest.me/sitemap.xml", "")));
+            httpContext.Setup(s => s.Response).Returns(() => new HttpResponseWrapper(new HttpResponse(responseWriter)));
+
+            var handler = new SitemapifyHttpHandler();
+            handler.ProcessRequest(httpContext.Object);
+
+            var document = XDocument.Parse(sb.ToString());
+
+            var sitemapUrlElement = (from urls in
+                    document.Descendants(XName.Get("urlset", SitemapUrl.SitemapNs))
+                        .Elements(XName.Get("url", SitemapUrl.SitemapNs))
+                select urls).First();
+
+            var priority = sitemapUrlElement.Element(XName.Get("priority", SitemapUrl.SitemapNs));
+
+            priority.Should().NotBeNull();
+            priority.Value.Should().Be("1.1");
         }
     }
 
@@ -88,7 +125,8 @@ namespace Sitemapify.Tests
             }
         }
 
-        public IEnumerable<ContentModelStub> Matching(ContentModelStub node, Func<ContentModelStub, bool> predicate = null, Func<ContentModelStub, bool> includeChildren = null)
+        public IEnumerable<ContentModelStub> Matching(ContentModelStub node,
+            Func<ContentModelStub, bool> predicate = null, Func<ContentModelStub, bool> includeChildren = null)
         {
             if (predicate?.Invoke(node) ?? true)
             {
