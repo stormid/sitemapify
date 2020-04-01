@@ -260,3 +260,4 @@ VersionAssemblyInfo.*
 # Umbraco
 sample/SitemapifyUmbracoSample/App_Data/TEMP
 sample/SitemapifyUmbracoSample/App_Data/Logs
+sample/SitemapifyUmbracoSample/Umbraco

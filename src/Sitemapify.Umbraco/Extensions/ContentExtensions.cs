@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Sitemapify.Umbraco.Config;
 using Umbraco.Core.Models;
-using Umbraco.Web;
+using Umbraco.Core.Models.PublishedContent;
 
 namespace Sitemapify.Umbraco.Extensions
 {
@@ -28,7 +26,7 @@ namespace Sitemapify.Umbraco.Extensions
         /// <returns></returns>
         public static bool HideFromSitemap(this IPublishedContent node, string propertyAlias = null)
         {
-            return node?.GetPropertyValue<bool>(propertyAlias ?? SitemapifyUmbracoContentProviderSettings.Current.ExcludedFromSitemapPropertyAlias, false) ?? false;
+            return node?.GetProperty(propertyAlias ?? SitemapifyUmbracoContentProviderSettings.Current.ExcludedFromSitemapPropertyAlias) != null && (bool) node?.GetProperty(propertyAlias ?? SitemapifyUmbracoContentProviderSettings.Current.ExcludedFromSitemapPropertyAlias).GetValue();
         }
 
         /// <summary>
@@ -39,7 +37,7 @@ namespace Sitemapify.Umbraco.Extensions
         /// <returns></returns>
         public static bool HideChildrenFromSitemap(this IPublishedContent node, string propertyAlias = null)
         {
-            return node?.GetPropertyValue<bool>(propertyAlias ?? SitemapifyUmbracoContentProviderSettings.Current.ExcludedChildrenFromSitemapPropertyAlias, false) ?? false;
+            return node?.GetProperty(propertyAlias ?? SitemapifyUmbracoContentProviderSettings.Current.ExcludedChildrenFromSitemapPropertyAlias) != null && (bool) node?.GetProperty(propertyAlias ?? SitemapifyUmbracoContentProviderSettings.Current.ExcludedChildrenFromSitemapPropertyAlias).GetValue();
         }
 
         internal static IEnumerable<IPublishedContent> DescendantSitemapNodes(this IPublishedContent node, string hideFromSitemapPropertyAlias = null, string hideChildrenFromSitemapPropertyAlias = null)
@@ -47,7 +45,7 @@ namespace Sitemapify.Umbraco.Extensions
             if (!node.HideFromSitemap(hideFromSitemapPropertyAlias)) yield return node;
             if (!node.HideChildrenFromSitemap(hideChildrenFromSitemapPropertyAlias))
             {
-                foreach (var child in node.Children())
+                foreach (var child in node.Children)
                 {
                     foreach (var grandChild in child.DescendantSitemapNodes(hideFromSitemapPropertyAlias, hideChildrenFromSitemapPropertyAlias))
                         yield return grandChild;
