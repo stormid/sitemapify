@@ -14,7 +14,7 @@ namespace SitemapifyUmbracoSample.Code
         }
     }
 
-    public class SitemapifyComposer : IComponent
+    public class SitemapifyComponent : IComponent
     {
         public void Initialize()
         {
@@ -24,11 +24,11 @@ namespace SitemapifyUmbracoSample.Code
         public void Terminate() { }
     }
 
-    public class SitemapifyUserComposer : IUserComposer
+    public class SitemapifyComposer : IUserComposer
     {
         public void Compose(Composition composition)
         {
-            composition.Components().Append<SitemapifyComposer>();
+            composition.Components().Append<SitemapifyComponent>();
         }
     }
 }
