@@ -71,6 +71,8 @@ public interface ISitemapDocumentBuilder
 
 ## Sitemapify.Umbraco Configuration
 
+_This version of Sitemapify.Umbraco supports Umbraco 8.1+. For Umbraco v7.* support, please refer to [version 0.5.2](https://github.com/stormid/sitemapify/releases/tag/0.5.2)._
+
 Firstly install the Umbraco extension:
 
 ```
