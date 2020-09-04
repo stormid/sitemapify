@@ -1,47 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Web.Mvc;
 using Sitemapify.Models;
 using Sitemapify.Providers.Impl;
 using Sitemapify.Umbraco.Config;
 using Sitemapify.Umbraco.Extensions;
-using Umbraco.Core;
-using Umbraco.Core.Models;
+using Umbraco.Core.Composing;
+using Umbraco.Core.Models.PublishedContent;
 using Umbraco.Web;
-using Umbraco.Web.Security;
 
 namespace Sitemapify.Umbraco
 {
     public class SitemapifyUmbracoContentProvider : AbstractSitemapContentProvider<IPublishedContent>
     {
         private readonly ISitemapifyUmbracoContentProviderSettings _settings;
+        private readonly IUmbracoContextFactory _contextFactory;
 
-        protected SitemapifyUmbracoContentProvider(ISitemapifyUmbracoContentProviderSettings settings)
+        protected SitemapifyUmbracoContentProvider(ISitemapifyUmbracoContentProviderSettings settings, IUmbracoContextFactory contextFactory)
         {
             _settings = settings;
+            _contextFactory = contextFactory;
         }
 
-        public SitemapifyUmbracoContentProvider() : this(SitemapifyUmbracoContentProviderSettings.Current) { }
+        public SitemapifyUmbracoContentProvider() : this(SitemapifyUmbracoContentProviderSettings.Current, DependencyResolver.Current.GetService<IUmbracoContextFactory>()) {}
+
 
         protected UmbracoContext GetUmbracoContext()
         {
-            var httpContextWrapper = new HttpContextWrapper(HttpContext.Current);
-            return UmbracoContext.EnsureContext(httpContextWrapper, ApplicationContext.Current, new WebSecurity(httpContextWrapper, ApplicationContext.Current));
+            return _contextFactory?.EnsureUmbracoContext()?.UmbracoContext;
         }
 
         protected override SitemapUrl CreateSitemapUrl(IPublishedContent entry, Uri baseUri)
         {
-            var uri = entry.UrlAbsolute();
-            if(!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
+            var uri = entry.Url(mode: UrlMode.Absolute);
+            if (!Uri.IsWellFormedUriString(uri, UriKind.Absolute))
             {
-                uri = $"{baseUri}{entry.Url()}";
+                uri = $"{baseUri.ToString().TrimEnd('/')}{entry.Url}";
             }
-            
-            var absoluteUri = uri.TrimEnd("/");
+
+            var absoluteUri = uri.TrimEnd('/');
             return SitemapUrl.Create(absoluteUri, entry.UpdateDate);
         }
-        
+
         protected sealed override IEnumerable<IPublishedContent> GetSitemapEntries()
         {
             var ctx = GetUmbracoContext();
@@ -65,7 +66,7 @@ namespace Sitemapify.Umbraco
         /// <returns>A content node, media nodes are not supported</returns>
         protected virtual IPublishedContent FromContent(UmbracoContext context)
         {
-            return context.ContentCache.GetByRoute("/");
+            return context.Content.GetByRoute("/");
         }
 
         public override bool Cacheable { get; } = true;

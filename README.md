@@ -1,4 +1,4 @@
-# Sitemapify
+# Sitemapify 
 Provides a ASP.NET HttpHandler to assist with generating a dynamic sitemap.xml file
 
 There is also an Umbraco specific extension to Sitemapify that supports building the sitemap from Umbraco CMS content.  See [Sitemapify.Umbraco](#sitemapifyumbraco-configuration) for further documentation
@@ -71,26 +71,37 @@ public interface ISitemapDocumentBuilder
 
 ## Sitemapify.Umbraco Configuration
 
+_This version of Sitemapify.Umbraco supports Umbraco 8.1+. For Umbraco v7.* support, please refer to [version 0.5.2](https://github.com/stormid/sitemapify/releases/tag/0.5.2)._
+
 Firstly install the Umbraco extension:
 
 ```
 Install-Package Sitemapify.Umbraco
 ```
 
-Once you have installed Sitemapify.Umbraco you can create an ApplicationEventHandler to configure Sitemapify to use the available "Umbraco Content Provider" to generate sitemap url that form the sitemap.xml.
+Once you have installed Sitemapify.Umbraco you can create an Component to configure Sitemapify to use the available "Umbraco Content Provider" to generate sitemap url that form the sitemap.xml.
 
 ```c#
-public class SitemapifyApplicationEventHandler : ApplicationEventHandler
+public class SitemapifyComponent : IComponent
 {
-    protected override void ApplicationStarting(UmbracoApplicationBase umbracoApplication, ApplicationContext applicationContext)
-    {
-        Configure.With(config => config
-          .UsingContentProvider(new SitemapifyUmbracoContentProvider())
-        );
-    }
+	public void Initialize()
+	{
+		Configure.With(config => config.UsingContentProvider(new SitemapifyUmbracoContentProvider()));
+	}
 
-    protected override bool ExecuteWhenApplicationNotConfigured { get; } = false;
-    protected override bool ExecuteWhenDatabaseNotConfigured { get; } = false;
+	public void Terminate() { }
+}
+```
+
+You'll also need to create a UserComposer to register the Component.
+
+```c#
+public class SitemapifyComposer : IUserComposer
+{
+	public void Compose(Composition composition)
+	{
+		composition.Components().Append<SitemapifyComponent>();
+	}
 }
 ```
 

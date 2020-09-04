@@ -153,7 +153,7 @@ Task("Create-NuGet-Package")
             new NuSpecContent { Source = "**/*", Target = "" },
         },
         Dependencies = new[] {
-            new NuSpecDependency { Id = "UmbracoCms.Core", Version = "[7.0,8.0]" },
+            new NuSpecDependency { Id = "UmbracoCms.Core", Version = "[8.1,9.0]" },
             new NuSpecDependency { Id = "Sitemapify", Version = "[" +versionInfo.NuGetVersionV2 +"]"}
         }
     });    
